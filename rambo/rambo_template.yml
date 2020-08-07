@@ -1,0 +1,24 @@
+rambo:
+  app:
+    name: {name} # this key is required
+    description: 'multi line text here to describe your app'
+    config_file: app.yml # can be left out if your app does not have a config file
+
+  entrypoint_paths: # this key is required
+    - {name}/terminal
+
+  environment: # this key and its children can be removed if loading a .env file is not needed
+    load_env: true
+    env_file_name: .env
+
+  db_connections: # db connections are optional and can be removed if not needed
+    my_db: ENV_VAR_NAME
+
+  terminal:
+    verbs:
+      - new
+      - list
+
+    nouns:
+      - file
+      - config

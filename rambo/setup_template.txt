@@ -1,0 +1,20 @@
+import sys
+import os
+from setuptools import setup, find_packages
+from setuptools.command.install import install
+
+VERSION = '0.0.1'
+
+
+setup(
+    name='{name}',
+    version=VERSION,
+    author='Sly Stalone',
+    discription='A great cli tool!',
+    include_package_data=True
+    packages=find_packages(exclude=('tests*', 'venv')),
+    entry_points={
+        'console_scripts': ['{name} = {name}.__main__:main']
+    },
+    python_requires='>=3'
+)

@@ -1,0 +1,4 @@
+include rambo/main_template.txt
+include rambo/rambo_template.yml
+include rambo/setup_template.txt
+include rambo/rambo.yml

@@ -1,0 +1,14 @@
+rambo:
+  app:
+    name: rambo
+    description: 'a small collection of tools to manage CLI entrypoints and execution'
+
+  entrypoint_paths:
+    - {entry}
+
+  terminal:
+    verbs:
+      - new
+
+    nouns:
+      - project
