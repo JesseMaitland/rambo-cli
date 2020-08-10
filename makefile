@@ -69,6 +69,11 @@ qa:
 #              Build and Distribution                       #
 #############################################################
 
+clean:
+	if [[ -d ./build ]]; then rm -rf build; fi \
+	&& if [[ -d ./dist ]]; then rm -rf dist; fi
+
+
 build:
 	. venv/bin/activate \
 	&& python setup.py sdist bdist_wheel

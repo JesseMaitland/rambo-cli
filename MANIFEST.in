@@ -1,4 +1,4 @@
-include rambo/main_template.txt
-include rambo/rambo_template.yml
-include rambo/setup_template.txt
+include rambo/templates/main_template.txt
+include rambo/templates/rambo_template.yml
+include rambo/templates/setup_template.txt
 include rambo/rambo.yml

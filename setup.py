@@ -13,12 +13,17 @@ def readme():
 
 
 def post_install():
-    py_inter_path = Path(sys.executable)
-    py_version = f"python{sys.version_info[0]}.{sys.version_info[0]}"
-    path_to_install = py_inter_path.parent.parent / "lib" / py_version / "site-packages" / "rambo"
-    rambo_config_file_path = path_to_install / "rambo.yml"
-    rambo_config_content = rambo_config_file_path.read_text().format(entry=path_to_install)
-    rambo_config_file_path.write_text(rambo_config_content)
+    try:
+        py_inter_path = Path(sys.executable)
+        py_version = f"python{sys.version_info[0]}.{sys.version_info[1]}"
+        path_to_install = py_inter_path.parent.parent / "lib" / py_version / "site-packages" / "rambo"
+        rambo_config_file_path = path_to_install / "rambo.yml"
+        rambo_config_content = rambo_config_file_path.read_text().format(entry=path_to_install)
+        print(rambo_config_content)
+        rambo_config_file_path.write_text(rambo_config_content)
+    except FileNotFoundError:
+        print("rambo config not found")
+        pass
 
 
 class VerifyVersionCommand(install):
@@ -37,12 +42,10 @@ class Install(install):
 
     def run(self):
         install.run(self)
-
-
-
+        # self.execute(post_install, [])
 
 setup(
-    name='rambo',
+    name='rambo-cli',
     version=VERSION,
     author='Jesse Maitland',
     discription='A simple toolkit for making a cli',
@@ -62,5 +65,7 @@ setup(
     python_requires='>=3',
     cmdclass={
         'verify': VerifyVersionCommand,
+        'install': Install
     }
 )
+

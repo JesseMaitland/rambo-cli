@@ -2,9 +2,10 @@ rambo:
   app:
     name: rambo
     description: 'a small collection of tools to manage CLI entrypoints and execution'
+    is_pip_package: true
 
   entrypoint_paths:
-    - {entry}
+    - terminal
 
   terminal:
     verbs:
