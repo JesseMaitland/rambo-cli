@@ -24,7 +24,7 @@ dev-init:
 	&& python3.6 -m venv venv \
 	&& . venv/bin/activate \
 	&& pip install --upgrade pip setuptools wheel \
-	&& pip install -r ${DEP_REQ}
+	&& pip install -r ${DEV_REQ}
 
 
 lib-req:
