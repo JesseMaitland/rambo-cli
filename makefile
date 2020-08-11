@@ -78,7 +78,7 @@ build:
 	. venv/bin/activate \
 	&& python setup.py sdist bdist_wheel
 
-deploy:
+release:
   ifdef version
 		./bin/release --version $(version)
   else
