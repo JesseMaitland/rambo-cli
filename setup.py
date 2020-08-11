@@ -1,6 +1,5 @@
 import sys
 import os
-from pathlib import Path
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 
@@ -10,20 +9,6 @@ VERSION = '0.0.1'
 def readme():
     with open('README.md') as file:
         return file.read()
-
-
-def post_install():
-    try:
-        py_inter_path = Path(sys.executable)
-        py_version = f"python{sys.version_info[0]}.{sys.version_info[1]}"
-        path_to_install = py_inter_path.parent.parent / "lib" / py_version / "site-packages" / "rambo"
-        rambo_config_file_path = path_to_install / "rambo.yml"
-        rambo_config_content = rambo_config_file_path.read_text().format(entry=path_to_install)
-        print(rambo_config_content)
-        rambo_config_file_path.write_text(rambo_config_content)
-    except FileNotFoundError:
-        print("rambo config not found")
-        pass
 
 
 class VerifyVersionCommand(install):
@@ -36,13 +21,6 @@ class VerifyVersionCommand(install):
         if tag != VERSION:
             info = "Git tag: {0} does not match the version of this app: {1}".format(tag, VERSION)
             sys.exit(info)
-
-
-class Install(install):
-
-    def run(self):
-        install.run(self)
-        # self.execute(post_install, [])
 
 setup(
     name='rambo-cli',
@@ -64,8 +42,7 @@ setup(
     long_description_content_type="text/markdown",
     python_requires='>=3',
     cmdclass={
-        'verify': VerifyVersionCommand,
-        'install': Install
+        'verify': VerifyVersionCommand
     }
 )
 

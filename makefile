@@ -3,7 +3,7 @@
 export REQ_DIR = requirements
 export LIB_REQ = ${REQ_DIR}/lib_requirements.txt
 export DEV_REQ = ${REQ_DIR}/deploy_requirements.txt
-export PROJECT_DIR = rsterm
+export PROJECT_DIR = rambo
 export TEST_DIR = tests
 
 

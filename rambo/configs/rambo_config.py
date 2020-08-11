@@ -89,7 +89,7 @@ class RamboConfig:
             app_config = yaml.safe_load(app_config_path.open())
             return AppConfig(**app_config)
         else:
-            raise AppConfigFileNotSet(f"No app config file is set in rambo.yml. Did you intend to provide one?")
+            raise AppConfigFileNotSet("No app config file is set in config file. Did you intend to provide one?")
 
     def get_entrypoint_paths(self) -> List[Path]:
         return [Path(p) for p in self.entrypoint_paths]
