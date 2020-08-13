@@ -20,7 +20,6 @@ class TestEntryPoint(TestCase):
 
     def test_static_methods(self):
         exp_static_method_names = [
-            'parse_entry_flags',
             'load_app_env',
         ]
 
