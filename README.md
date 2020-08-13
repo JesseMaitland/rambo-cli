@@ -35,17 +35,31 @@ touch spam/entrypoints/beans.py
 
 from rambo import EntryPoint
 
-class RunSpam(EntryPoint):
+class PlaceOrder(EntryPoint):
 
     def run(self):
         print("I'll have the spam and eggs!")
 ````
 
-Now run your command
-```commandline
-python spam run spam
+In `spam.yml` add the verb and noun which describes your entry point
+
+```yaml
+terminal:
+    nouns:
+      - order
+
+    verbs:
+      - place
 ```
 
+Now run your command
+```commandline
+python spam place order
+```
 
+If everything worked correctly, on the terminal you should see
+```commandline
+I'll have the spam and eggs!
+```
 
 
