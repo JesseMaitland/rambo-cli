@@ -35,7 +35,7 @@ class RamboConfig:
 
     @property
     def load_env_file(self) -> bool:
-        return True if self.environment.get('load_env_file', '') else False
+        return True if self.environment.get('load_env', '') else False
 
     @property
     def env_file_name(self) -> str:

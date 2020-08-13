@@ -1,6 +1,6 @@
 import sys
 import dotenv
-from typing import Dict, Tuple, Any
+from typing import Dict, Tuple
 from abc import ABC, abstractmethod
 from pathlib import Path
 from argparse import ArgumentParser, Namespace
@@ -49,7 +49,7 @@ class EntryPoint(ABC):
         """
         self.rambo: RamboConfig = RamboConfig.parse_config(config_path)
 
-        self.cmd_args: Namespace = parse_cmd_args(self.entry_point_args, arg_index=3) # self.parse_entry_flags(self.entry_point_args)
+        self.cmd_args: Namespace = parse_cmd_args(self.entry_point_args, arg_index=3)
 
         if self.rambo.load_env_file:
             self.env_file_path = Path().cwd() / self.rambo.env_file_name
