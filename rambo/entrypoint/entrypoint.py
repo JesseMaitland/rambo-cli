@@ -24,7 +24,7 @@ class EntryPoint(ABC):
 
     def __init__(self, config_path: Path = None):
 
-        self.rambo = RamboConfig.parse_config(config_path)
+        self.rambo: RamboConfig = RamboConfig.parse_config(config_path)
 
         self.cmd_args: Namespace = self.parse_entry_flags(self.entry_point_args)
 
