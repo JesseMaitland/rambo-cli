@@ -31,4 +31,3 @@ class TestRamboConfig(TestCase):
         self.assertEqual(parsed_config.app_description, self.rambo_config.app_description)
         self.assertEqual(parsed_config.load_env_file, self.rambo_config.load_env_file)
         self.assertEqual(parsed_config.env_file_name, self.rambo_config.env_file_name)
-
