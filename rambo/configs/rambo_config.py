@@ -103,12 +103,10 @@ class RamboConfig:
             raise KeyError(f'no database with the name {connection_name} has been configured in rambo.yml')
 
     @staticmethod
-    def parse_config(config_path: Path = None) -> 'RamboConfig':
+    def parse_config(config_path: Path) -> 'RamboConfig':
 
-        if config_path is None:
-            config_path = RamboConfig.root_dir / "rambo.yml"
-
-        return RamboConfig(**yaml.safe_load(config_path.open())['rambo'])
+        with config_path.open() as config_file:
+            return RamboConfig(**yaml.safe_load(config_file)['rambo'])
 
     def parse_nouns_and_verbs(self) -> Namespace:
         arg_parser = ArgumentParser()

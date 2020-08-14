@@ -1,8 +1,8 @@
 rambo:
   app:
-    name: {name} # this key is required
-    description: 'short text to describe your app'
-    config_file: app.yml # can be left out if your app does not have a config file
+    name: first_blood
+    description: 'spam, beans, eggs'
+    config_file: test_app_config.yml
     is_pip_package: true
 
   entrypoint_paths: # this key is required
