@@ -8,53 +8,51 @@
 pip install rambo-cli
 ```
 
-### Create a Project
-```commandline
-rambo new project spam 
-```
+### project structure
+rambo will look for a directory in your project called `entrypoints` with the below structure where 
+`beans.py` and `eggs.py` are files which contain the entrypoints for your cli.
 
-a few directories and files will be created
-```
-root
-    spam
-        entrypoints
-            __init__.py
-            spam.yml
+```yaml
+app
+    entrypoints
+      __init__.py
+      beans.py
+      eggs.py
+    other_dirs
+   __init__.py
+   __main__.py
 ```
 
 ### Creating Your First Entrypoint
 
 Create a file in the `spam/entrypoints` directory
 
-```commandline
-touch spam/entrypoints/beans.py
-```
 
 ````python
-# beans.py
+# /entrypoints/beans.py
 
 from rambo import EntryPoint
 
-class PlaceOrder(EntryPoint):
+class Order(EntryPoint):
 
-    def run(self):
+    def action(self):
         print("I'll have the spam and eggs!")
 ````
 
-In `spam.yml` add the verb and noun which describes your entry point
+````python
+# /entrypoints/beans.py
 
-```yaml
-terminal:
-    nouns:
-      - order
+from rambo import EntryPoint
 
-    verbs:
-      - place
-```
+class Order(EntryPoint):
+
+    def action(self):
+        print("I'll have the spam and eggs!")
+````
 
 Now run your command
 ```commandline
-python spam place order
+python app order
 ```
 
 If everything worked correctly, on the terminal you should see

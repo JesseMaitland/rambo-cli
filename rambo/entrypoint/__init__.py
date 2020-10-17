@@ -1,10 +1,11 @@
 import sys
+from textwrap import dedent
 from typing import Dict, Tuple, List
-from abc import ABC
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace, RawTextHelpFormatter
 
 
-def parse_cmd_args(args_config: Dict[Tuple[str, str], Dict[str, str]], arg_index: int = 0, arg_stop_index: int = None) -> Namespace:
+def parse_cmd_args(args_config: Dict[Tuple[str, str], Dict[str, str]], arg_index: int = 0,
+                   arg_stop_index: int = None) -> Namespace:
     """
     Parse command line args in one call, using a dict as a configuration.
     Args:
@@ -13,7 +14,7 @@ def parse_cmd_args(args_config: Dict[Tuple[str, str], Dict[str, str]], arg_index
         arg_stop_index: where in the list of sys.argv to stop parsing
     Returns: Namespace
     """
-    arg_parser = ArgumentParser()
+    arg_parser = ArgumentParser(formatter_class=RawTextHelpFormatter)
 
     for command, options in args_config.items():
         arg_parser.add_argument(*command, **options)
@@ -24,7 +25,7 @@ def parse_cmd_args(args_config: Dict[Tuple[str, str], Dict[str, str]], arg_index
         return arg_parser.parse_args(sys.argv[arg_index:])
 
 
-class EntryPoint(ABC):
+class BaseEntryPoint:
     """
     Base class to be used by all program entry points.
 
@@ -64,27 +65,8 @@ class EntryPoint(ABC):
     # override this class dict with any arguments which apply only to this entry point
     # or which would otherwise apply to all descendant EntryPoint objects.
     entry_point_args = {}
-
-    def __init__(self):
-        arg_index = 2 if getattr(self, 'action', None) else 3
-        self.args: Namespace = parse_cmd_args(self.entry_point_args, arg_index=arg_index)
-
-    def execute(self, action_name: str) -> None:
-
-        try:
-            action = getattr(self, f"action_{action_name}")
-
-        except AttributeError:
-            print(f"{action_name} is not a valid action for object {self.name()}")
-            print(f"For object {self.name()} the actions are {self}")
-            exit()
-
-        else:
-            action()
-
-    @classmethod
-    def get_actions(cls) -> List[str]:
-        return [a.replace('cmd_', '') for a in cls.__dict__.keys() if a.startswith('cmd_')]
+    description = ""
+    help_text = ""
 
     @classmethod
     def name(cls) -> str:
@@ -94,3 +76,48 @@ class EntryPoint(ABC):
         name = cls.__name__
         snake = ''.join([f'_{c.lower()}' if c.isupper() else c for c in name])
         return snake.lstrip('_')
+
+    @classmethod
+    def get_actions(cls) -> List[str]:
+        return [a.replace('action', '').replace('_', '') for a in cls.__dict__.keys() if a.startswith('action')]
+
+    @classmethod
+    def help(cls) -> str:
+        help_msg = f'available actions for command {cls.name()}\n'
+        for action in cls.get_actions():
+            help_msg = help_msg + '-> ' + action + '\n'
+
+        help_msg = help_msg + dedent(f"""
+        {cls.help_text}
+        """)
+        return help_msg
+
+
+class SingleActionEntryPoint(BaseEntryPoint):
+
+    def __init__(self):
+        self.args: Namespace = parse_cmd_args(self.entry_point_args, arg_index=2)
+        super().__init__()
+
+    def action(self) -> None:
+        raise NotImplementedError("a single action entrypoint must override the base action method.")
+
+
+class MultiActionEntryPoint(BaseEntryPoint):
+
+    def __init__(self):
+        self.args: Namespace = parse_cmd_args(self.entry_point_args, arg_index=3)
+        super().__init__()
+
+    def execute(self, action_name: str) -> None:
+
+        try:
+            action = getattr(self, f"action_{action_name}")
+
+        except AttributeError:
+            print(f"{action_name} is not a valid action for object {self.name()}")
+            print(f"For object {self.name()} the actions are {self.get_actions()}")
+            exit()
+
+        else:
+            action()
