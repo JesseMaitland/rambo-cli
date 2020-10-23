@@ -1,6 +1,7 @@
 import pkgutil
 import inspect
 from typing import Dict
+from pathlib import Path
 from importlib import import_module
 from rambo.entrypoint import (
     BaseEntryPoint,
@@ -12,9 +13,10 @@ from rambo.entrypoint import (
 
 def collect_entry_points(module_name: str) -> Dict[str, BaseEntryPoint]:
     entrypoints = []
-    for _, name, _ in pkgutil.iter_modules(path=[f"{module_name}/entrypoints"]):
+    path = Path.cwd() / module_name / "entrypoints"
+    for _, name, _ in pkgutil.iter_modules(path=[path]):
 
-        module = import_module(name=f"{module_name}.entrypoints.{name}")
+        module = import_module(name=f"entrypoints.{name}")
 
         for mod_name, obj in inspect.getmembers(module):
             if inspect.isclass(obj):
