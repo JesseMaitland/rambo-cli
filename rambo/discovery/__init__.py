@@ -13,15 +13,17 @@ from rambo.entrypoint import (
 
 def collect_entry_points(module_name: str) -> Dict[str, BaseEntryPoint]:
     entrypoints = []
-    path = Path.cwd() / module_name / "entrypoints"
+    path = Path(module_name) / "entrypoints"
+    doted_path = '.'.join(path.parts)
+
     for _, name, _ in pkgutil.iter_modules(path=[path]):
 
-        module = import_module(name=f"entrypoints.{name}")
+        module = import_module(name=f"{doted_path}.{name}")
 
         for mod_name, obj in inspect.getmembers(module):
             if inspect.isclass(obj):
                 if issubclass(obj, BaseEntryPoint):
-                    if obj != SingleActionEntryPoint and obj != MultiActionEntryPoint:
+                    if obj.discover:
                         entrypoints.append(obj)
     return {entrypoint.name(): entrypoint for entrypoint in entrypoints}
 

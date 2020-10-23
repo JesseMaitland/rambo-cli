@@ -64,6 +64,7 @@ class BaseEntryPoint:
 
     # override this class dict with any arguments which apply only to this entry point
     # or which would otherwise apply to all descendant EntryPoint objects.
+    discover = False
     entry_point_args = {}
     description = ""
     help_text = ""
